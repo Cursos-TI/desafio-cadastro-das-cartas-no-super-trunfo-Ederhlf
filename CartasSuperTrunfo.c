@@ -10,9 +10,29 @@ typedef struct {
     char nomeCidade[MAX_NOME_CIDADE]; // Nome da cidade
     int populacao; // População da cidade
     float area; // Área da cidade em km²
-    float pib; // PIB da cidade em reais (use float para incluir centavos)
+    float pib; // PIB da cidade em reais
     int pontos_turisticos; // Número de pontos turísticos
+    float densidade_populacional; // Densidade Populacional
+    double pib_per_capita; // PIB per capita
 } Cidade;
+
+// Função para calcular a densidade populacional 
+float calcularDensidadePopulacional(Cidade cidade) {
+    if (cidade.area > 0) {
+        return cidade.populacao / cidade.area;
+    } else {
+        return 0.0;
+    }
+}
+
+// Função para calcular o PIB 
+double calcularPIBPerCapita(Cidade cidade) {
+    if (cidade.populacao > 0) {
+        return (float) cidade.pib / cidade.populacao;
+    } else {
+        return 0.0;
+    }
+}
 
 int main() {
     Cidade cidades[NUM_ESTADOS][CIDADES_POR_ESTADO];
@@ -48,7 +68,12 @@ int main() {
             printf("Número de pontos turísticos: ");
             scanf("%d", &cidades[i][j].pontos_turisticos);
 
-            printf("\n");
+            cidades[i][j].densidade_populacional = calcularDensidadePopulacional(cidades[i][j]);
+            cidades[i][j].pib_per_capita = calcularPIBPerCapita(cidades[i][j]);
+
+           printf("Densidade Populacional: %.2f hab/km²\n", cidades[i][j].densidade_populacional);
+            printf("PIB per Capita: R$ %.8lf\n", cidades[i][j].pib_per_capita);
+            printf("\n-------------------------\n");
         }
     }
 
@@ -60,8 +85,10 @@ int main() {
             printf("Nome: %s\n", cidades[i][j].nomeCidade);
             printf("População: %d\n", cidades[i][j].populacao);
             printf("Área: %.2f km²\n", cidades[i][j].area);
-            printf("PIB: R$ %.2f\n", cidades[i][j].pib); // Exibe o PIB com duas casas decimais e símbolo de reais
+            printf("PIB: R$ %.2f\n", cidades[i][j].pib);
             printf("Pontos turísticos: %d\n", cidades[i][j].pontos_turisticos);
+            printf("Densidade Populacional: %.2f hab/km²\n", cidades[i][j].densidade_populacional);
+            printf("PIB per Capita: R$ %.8lf\n", cidades[i][j].pib_per_capita);
             printf("-------------------------\n");
         }
     }
